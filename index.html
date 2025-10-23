@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운세의 신 - AI 기반 종합 운세 플랫폼</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff9a56 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .service-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(255, 107, 53, 0.3);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+            position: relative;
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #ff6b35;
+            border-radius: 10px;
+        }
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #f7931e;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="py-6 px-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-moon text-white text-3xl"></i>
+                <h1 class="text-white text-2xl font-bold">운세의 신</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="alert('로그인 기능은 서버 배포 후 사용 가능합니다.')" class="text-white bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30">
+                    로그인
+                </button>
+                <button onclick="alert('회원가입 기능은 서버 배포 후 사용 가능합니다.')" class="text-white bg-orange-500 px-4 py-2 rounded-lg hover:bg-orange-600">
+                    회원가입
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 pb-12">
+        <!-- Hero Section -->
+        <div class="glass-effect rounded-3xl p-10 mb-6 fade-in text-center">
+            <h2 class="text-5xl font-bold text-gray-800 mb-6" style="font-family: 'Noto Sans KR', sans-serif;">
+                당신의 운명을 만나보세요
+            </h2>
+            <p class="text-gray-700 text-lg mb-6">
+                전통 철학과 AI 기술이 만난 프리미엄 운세 서비스
+            </p>
+            <div class="bg-orange-50 border-2 border-orange-300 rounded-2xl p-5 mb-6 inline-block shadow-sm">
+                <p class="text-orange-800 font-bold text-xl mb-2">
+                    🎁 지금 회원가입하고 <span class="text-3xl text-orange-600">무료 3회</span> 체험하세요!
+                </p>
+                <p class="text-orange-700 text-sm">
+                    프리미엄 회원은 무제한 이용 가능 ✨
+                </p>
+            </div>
+            <div class="flex justify-center gap-8 text-base text-orange-700">
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-orange-500"></i> AI 관상 분석
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-orange-500"></i> 셀럽 닮은꼴
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-orange-500"></i> 정통 사주
+                </span>
+            </div>
+        </div>
+
+        <!-- Service Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <!-- Face Reading -->
+            <div class="service-card glass-effect rounded-3xl p-8 fade-in text-center" onclick="openServiceModal('face')">
+                <div class="text-7xl mb-6">📸</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">AI 관상</h3>
+                <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                    얼굴 사진으로 운세 분석<br/>+ 셀럽 닮은꼴 찾기
+                </p>
+                <div class="mt-4 pt-4 border-t border-orange-200">
+                    <span class="text-orange-600 text-sm font-semibold">
+                        📷 사진 촬영
+                    </span>
+                </div>
+            </div>
+
+            <!-- Palm Reading -->
+            <div class="service-card glass-effect rounded-3xl p-8 fade-in text-center" onclick="openServiceModal('palm')" style="animation-delay: 0.1s">
+                <div class="text-7xl mb-6">🤚</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">AI 수상</h3>
+                <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                    손바닥 사진으로<br/>손금 운세 해석
+                </p>
+                <div class="mt-4 pt-4 border-t border-orange-200">
+                    <span class="text-orange-600 text-sm font-semibold">
+                        🖐️ 손바닥 촬영
+                    </span>
+                </div>
+            </div>
+
+            <!-- Saju -->
+            <div class="service-card glass-effect rounded-3xl p-8 fade-in text-center" onclick="openServiceModal('saju')" style="animation-delay: 0.2s">
+                <div class="text-7xl mb-6">🔮</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">사주팔자</h3>
+                <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                    생년월일시로<br/>정통 사주 풀이
+                </p>
+                <div class="mt-4 pt-4 border-t border-orange-200">
+                    <span class="text-orange-600 text-sm font-semibold">
+                        📅 생년월일 입력
+                    </span>
+                </div>
+            </div>
+
+            <!-- Tarot -->
+            <div class="service-card glass-effect rounded-3xl p-8 fade-in text-center" onclick="openServiceModal('tarot')" style="animation-delay: 0.3s">
+                <div class="text-7xl mb-6">🃏</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">타로 & 별자리</h3>
+                <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                    디지털 타로카드와<br/>12궁도 운세
+                </p>
+                <div class="mt-4 pt-4 border-t border-orange-200">
+                    <span class="text-orange-600 text-sm font-semibold">
+                        🌟 카드 선택
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="glass-effect rounded-3xl p-10 fade-in">
+            <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">왜 운세의 신인가요?</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h4 class="font-bold text-gray-800 text-lg mb-3">정확한 AI 분석</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">최신 AI 기술로 정밀한 관상·수상 분석</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">⭐</div>
+                    <h4 class="font-bold text-gray-800 text-lg mb-3">빠른 결과물</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">유명 연예인과 얼굴 비교 분석</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🔒</div>
+                    <h4 class="font-bold text-gray-800 text-lg mb-3">안전한 서비스</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">개인정보 보호와 보안 최우선</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Service Modal -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-orange-800" id="modalTitle">서비스 안내</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div id="modalBody" class="text-gray-700">
+                <p class="mb-4">이 기능은 서버 배포 후 이용 가능합니다.</p>
+                <p class="text-sm text-gray-500">현재는 데모 페이지입니다. 실제 기능 사용을 위해서는:</p>
+                <ul class="list-disc list-inside text-sm text-gray-500 mt-2 space-y-1">
+                    <li>백엔드 서버 배포 필요</li>
+                    <li>데이터베이스 연동 필요</li>
+                    <li>AI API 연동 필요</li>
+                </ul>
+            </div>
+            <button onclick="closeModal()" class="w-full mt-6 bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition">
+                확인
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const serviceInfo = {
+            face: {
+                title: '📸 AI 관상 분석',
+                content: `
+                    <p class="mb-4">얼굴 사진을 업로드하면 AI가 분석하여:</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>얼굴형 및 오관(눈, 코, 입, 이마) 분석</li>
+                        <li>셀럽 닮은꼴 찾기 (아이유, 손예진, 전지현 등)</li>
+                        <li>재물운, 애정운, 사업운, 건강운 해석</li>
+                        <li>행운의 색상, 숫자, 요일 제공</li>
+                    </ul>
+                    <p class="text-sm text-gray-500">※ 서버 배포 후 이용 가능</p>
+                `
+            },
+            palm: {
+                title: '🤚 AI 수상 분석',
+                content: `
+                    <p class="mb-4">손바닥 사진을 업로드하면:</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>손 모양 분석 (물형, 불형, 토형, 금형, 목형)</li>
+                        <li>4대 손금선 해석 (생명선, 감정선, 두뇌선, 운명선)</li>
+                        <li>특별한 표시 (별, 삼각형, 십자가) 분석</li>
+                        <li>행운의 나이 예측</li>
+                    </ul>
+                    <p class="text-sm text-gray-500">※ 서버 배포 후 이용 가능</p>
+                `
+            },
+            saju: {
+                title: '🔮 사주팔자 분석',
+                content: `
+                    <p class="mb-4">생년월일시를 입력하면:</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>사주 네 기둥 (년주, 월주, 일주, 시주) 분석</li>
+                        <li>오행(목화토금수) 균형 분석</li>
+                        <li>성격 분석 및 적합 직업 추천</li>
+                        <li>올해 운세 및 향후 5년 운세</li>
+                        <li>인생 전환기 예측</li>
+                        <li>띠별 궁합 분석</li>
+                    </ul>
+                    <p class="text-sm text-gray-500">※ 서버 배포 후 이용 가능</p>
+                `
+            },
+            tarot: {
+                title: '🃏 타로 & 별자리 운세',
+                content: `
+                    <p class="mb-4">타로카드와 별자리로:</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>디지털 타로카드 3장 스프레드 (과거-현재-미래)</li>
+                        <li>12궁도 별자리별 오늘의 운세</li>
+                        <li>종합운, 애정운, 직장운, 재물운, 건강운</li>
+                        <li>행운의 색상과 숫자</li>
+                        <li>별자리 궁합 분석</li>
+                    </ul>
+                    <p class="text-sm text-gray-500">※ 서버 배포 후 이용 가능</p>
+                `
+            }
+        };
+
+        function openServiceModal(service) {
+            const modal = document.getElementById('serviceModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            const info = serviceInfo[service];
+            title.innerHTML = info.title;
+            body.innerHTML = info.content;
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('serviceModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('serviceModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
