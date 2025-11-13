@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
           slivers: [
             // MZ 스타일 헤더
             SliverAppBar(
-              expandedHeight: 140,
+              expandedHeight: 100,
               floating: true,
               pinned: false,
               backgroundColor: Colors.white,
@@ -116,7 +116,7 @@ class HomePage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
@@ -126,18 +126,18 @@ class HomePage extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 22,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.8,
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                             Text(
                               localization.translate('global_service'),
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -146,8 +146,8 @@ class HomePage extends StatelessWidget {
                       ),
                       // 언어 변경 아이콘 (오른쪽 상단)
                       Positioned(
-                        top: 40,
-                        right: 16,
+                        top: 24,
+                        right: 12,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.2),
@@ -163,20 +163,20 @@ class HomePage extends StatelessWidget {
                               onTap: () => _showLanguageDialog(context),
                               borderRadius: BorderRadius.circular(20),
                               child: Padding(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(8),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const Icon(
                                       Icons.language,
                                       color: Colors.white,
-                                      size: 20,
+                                      size: 16,
                                     ),
-                                    const SizedBox(width: 6),
+                                    const SizedBox(width: 4),
                                     Text(
                                       LocalizationService.supportedLanguages
                                           .firstWhere((l) => l['code'] == localization.currentLanguage)['flag']!,
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -452,9 +452,9 @@ class _SectionHeader extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 22,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
+              letterSpacing: 0.3,
             ),
           ),
         ],
@@ -477,9 +477,9 @@ class _FeatureGrid extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+          childAspectRatio: 1.1,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
         ),
         itemCount: items.length,
         itemBuilder: (context, index) => items[index],
@@ -523,34 +523,36 @@ class _FeatureItem extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(icon, color: Colors.white, size: 36),
+                  child: Icon(icon, color: Colors.white, size: 28),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Text(
                   title,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 12,
+                    fontSize: 10,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
@@ -592,7 +594,7 @@ class _PromotionBanner extends StatelessWidget {
           onTap: () => _showPromoDialog(context),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
                 Expanded(
@@ -605,16 +607,16 @@ class _PromotionBanner extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           localization.translate('promo_highlight'),
@@ -622,19 +624,19 @@ class _PromotionBanner extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Color(0xFFFF6B6B),
-                            fontSize: 13,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         localization.translate('promo_subtitle'),
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: 10,
                         ),
                       ),
                     ],
@@ -643,7 +645,7 @@ class _PromotionBanner extends StatelessWidget {
                 const Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
-                  size: 24,
+                  size: 18,
                 ),
               ],
             ),
