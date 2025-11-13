@@ -30,9 +30,11 @@ class _PalmAnalysisScreenState extends State<PalmAnalysisScreen> {
         _isAnalyzing = true;
       });
 
+      final localization = context.read<LocalizationService>();
       final analysis = await AnalysisService.analyzePalm(
         'demo_user',
         image.path,
+        localization.currentLanguage,
       );
 
       await StorageService.saveAnalysis('palm', analysis.toJson());
@@ -47,7 +49,7 @@ class _PalmAnalysisScreenState extends State<PalmAnalysisScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => AnalysisResultScreen(
-            title: context.read<LocalizationService>().translate('palm_reading_title'),
+            title: localization.translate('palm_reading_title'),
             analysis: analysis.analysis,
             confidence: analysis.confidence,
             details: analysis.lines,

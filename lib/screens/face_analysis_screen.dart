@@ -32,9 +32,11 @@ class _FaceAnalysisScreenState extends State<FaceAnalysisScreen> {
       });
 
       // 분석 수행
+      final localization = context.read<LocalizationService>();
       final analysis = await AnalysisService.analyzeFace(
         'demo_user',
         image.path,
+        localization.currentLanguage,
       );
 
       // 분석 결과 저장
@@ -51,7 +53,7 @@ class _FaceAnalysisScreenState extends State<FaceAnalysisScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => AnalysisResultScreen(
-            title: '얼굴 관상 분석 결과',
+            title: localization.translate('face_analysis_title'),
             analysis: analysis.analysis,
             confidence: analysis.confidence,
             details: analysis.features,

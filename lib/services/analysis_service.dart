@@ -10,26 +10,23 @@ class AnalysisService {
   static final _random = Random();
 
   // 얼굴 관상 분석 (AI 시뮬레이션)
-  static Future<FaceAnalysis> analyzeFace(String userId, String imageUrl) async {
+  static Future<FaceAnalysis> analyzeFace(String userId, String imageUrl, String languageCode) async {
     // AI 분석 시뮬레이션
     await Future.delayed(const Duration(seconds: 2));
 
+    final faceShapes = _getFaceShapesByLanguage(languageCode);
+    final sizes = _getSizesByLanguage(languageCode);
+    final noseShapes = _getNoseShapesByLanguage(languageCode);
+
     final features = {
-      'faceShape': ['계란형', '둥근형', '각진형', '긴형'][_random.nextInt(4)],
-      'eyeSize': ['크다', '중간', '작다'][_random.nextInt(3)],
-      'noseShape': ['높은 콧날', '부드러운 콧날', '넓은 콧날'][_random.nextInt(3)],
-      'mouthSize': ['크다', '중간', '작다'][_random.nextInt(3)],
-      'foreheadSize': ['넓다', '중간', '좁다'][_random.nextInt(3)],
+      'faceShape': faceShapes[_random.nextInt(faceShapes.length)],
+      'eyeSize': sizes[_random.nextInt(sizes.length)],
+      'noseShape': noseShapes[_random.nextInt(noseShapes.length)],
+      'mouthSize': sizes[_random.nextInt(sizes.length)],
+      'foreheadSize': sizes[_random.nextInt(sizes.length)],
     };
 
-    final analysisTexts = [
-      '귀하의 얼굴형은 ${features['faceShape']}으로 리더십과 결단력이 뛰어납니다.',
-      '눈의 크기가 ${features['eyeSize']}으로 통찰력과 관찰력이 우수합니다.',
-      '${features['noseShape']}을 가지고 있어 재물운이 좋고 성공 가능성이 높습니다.',
-      '입의 크기가 ${features['mouthSize']}으로 대인관계와 소통 능력이 뛰어납니다.',
-      '이마가 ${features['foreheadSize']}으로 지혜와 사고력이 뛰어나며 학문적 성취가 기대됩니다.',
-      '전반적으로 균형잡힌 얼굴 구조로 건강과 장수의 상을 가지고 있습니다.',
-    ];
+    final analysisTexts = _generateFaceAnalysisText(features, languageCode);
 
     return FaceAnalysis(
       id: _uuid.v4(),
@@ -43,7 +40,7 @@ class AnalysisService {
   }
 
   // 손금 분석 (AI 시뮬레이션)
-  static Future<PalmAnalysis> analyzePalm(String userId, String imageUrl) async {
+  static Future<PalmAnalysis> analyzePalm(String userId, String imageUrl, String languageCode) async {
     await Future.delayed(const Duration(seconds: 2));
 
     final lines = {
@@ -53,14 +50,7 @@ class AnalysisService {
       'fateLine': {'length': 'medium', 'depth': 'medium', 'clarity': 'faint'},
     };
 
-    final analysisTexts = [
-      '생명선이 길고 깊어 건강하고 장수할 상입니다. 체력이 좋고 생명력이 강합니다.',
-      '지능선이 명확하게 나타나 있어 판단력과 지적 능력이 뛰어납니다.',
-      '감정선이 길고 깊어 애정운이 좋으며 깊은 사랑을 나눌 수 있습니다.',
-      '운명선이 보이며 자신의 길을 찾아 성공할 가능성이 높습니다.',
-      '재물선이 나타나 있어 경제적으로 안정되고 부를 축적할 수 있습니다.',
-      '전반적으로 균형잡힌 손금으로 행운과 성공의 가능성이 높습니다.',
-    ];
+    final analysisTexts = _generatePalmAnalysisText(languageCode);
 
     return PalmAnalysis(
       id: _uuid.v4(),
@@ -389,5 +379,199 @@ class AnalysisService {
     buffer.writeln('\n※ 타로 해석은 참고용이며, 최종 선택과 행동은 본인의 의지에 달려있습니다.');
 
     return buffer.toString();
+  }
+
+  // 다국어 지원 헬퍼 함수들
+  static List<String> _getFaceShapesByLanguage(String languageCode) {
+    switch (languageCode) {
+      case 'ko':
+        return ['계란형', '둥근형', '각진형', '긴형'];
+      case 'en':
+        return ['Oval', 'Round', 'Square', 'Long'];
+      case 'zh':
+        return ['鹅蛋脸', '圆脸', '方脸', '长脸'];
+      case 'ja':
+        return ['卵型', '丸型', '角型', '長型'];
+      case 'vi':
+        return ['Hình trứng', 'Tròn', 'Vuông', 'Dài'];
+      case 'ar':
+        return ['بيضاوي', 'دائري', 'مربع', 'طويل'];
+      default:
+        return ['Oval', 'Round', 'Square', 'Long'];
+    }
+  }
+
+  static List<String> _getSizesByLanguage(String languageCode) {
+    switch (languageCode) {
+      case 'ko':
+        return ['크다', '중간', '작다'];
+      case 'en':
+        return ['Large', 'Medium', 'Small'];
+      case 'zh':
+        return ['大', '中等', '小'];
+      case 'ja':
+        return ['大きい', '中間', '小さい'];
+      case 'vi':
+        return ['Lớn', 'Trung bình', 'Nhỏ'];
+      case 'ar':
+        return ['كبير', 'متوسط', 'صغير'];
+      default:
+        return ['Large', 'Medium', 'Small'];
+    }
+  }
+
+  static List<String> _getNoseShapesByLanguage(String languageCode) {
+    switch (languageCode) {
+      case 'ko':
+        return ['높은 콧날', '부드러운 콧날', '넓은 콧날'];
+      case 'en':
+        return ['High bridge', 'Soft bridge', 'Wide bridge'];
+      case 'zh':
+        return ['高鼻梁', '柔和鼻梁', '宽鼻梁'];
+      case 'ja':
+        return ['高い鼻筋', '柔らかい鼻筋', '広い鼻筋'];
+      case 'vi':
+        return ['Sống mũi cao', 'Sống mũi mềm', 'Sống mũi rộng'];
+      case 'ar':
+        return ['جسر أنف عالي', 'جسر أنف ناعم', 'جسر أنف عريض'];
+      default:
+        return ['High bridge', 'Soft bridge', 'Wide bridge'];
+    }
+  }
+
+  static List<String> _generateFaceAnalysisText(Map<String, dynamic> features, String languageCode) {
+    switch (languageCode) {
+      case 'ko':
+        return [
+          '귀하의 얼굴형은 ${features['faceShape']}으로 리더십과 결단력이 뛰어납니다.',
+          '눈의 크기가 ${features['eyeSize']}으로 통찰력과 관찰력이 우수합니다.',
+          '${features['noseShape']}을 가지고 있어 재물운이 좋고 성공 가능성이 높습니다.',
+          '입의 크기가 ${features['mouthSize']}으로 대인관계와 소통 능력이 뛰어납니다.',
+          '이마가 ${features['foreheadSize']}으로 지혜와 사고력이 뛰어나며 학문적 성취가 기대됩니다.',
+          '전반적으로 균형잡힌 얼굴 구조로 건강과 장수의 상을 가지고 있습니다.',
+        ];
+      case 'en':
+        return [
+          'Your face shape is ${features['faceShape']}, indicating excellent leadership and decisiveness.',
+          'Your eye size is ${features['eyeSize']}, showing superior insight and observation skills.',
+          'You have ${features['noseShape']}, suggesting good fortune and high success potential.',
+          'Your mouth size is ${features['mouthSize']}, indicating excellent interpersonal and communication skills.',
+          'Your forehead is ${features['foreheadSize']}, showing exceptional wisdom and academic achievement potential.',
+          'Overall, you have a well-balanced facial structure indicating health and longevity.',
+        ];
+      case 'zh':
+        return [
+          '您的脸型是${features['faceShape']}，表明领导力和决断力出色。',
+          '您的眼睛${features['eyeSize']}，显示卓越的洞察力和观察力。',
+          '您有${features['noseShape']}，暗示财运好，成功潜力高。',
+          '您的嘴巴${features['mouthSize']}，表明人际关系和沟通能力出色。',
+          '您的额头${features['foreheadSize']}，显示智慧和思考力优秀，学术成就可期。',
+          '总体来说，面部结构均衡，有健康长寿之相。',
+        ];
+      case 'ja':
+        return [
+          'あなたの顔の形は${features['faceShape']}で、リーダーシップと決断力に優れています。',
+          '目の大きさは${features['eyeSize']}で、洞察力と観察力が優れています。',
+          '${features['noseShape']}を持っていて、財運が良く成功の可能性が高いです。',
+          '口の大きさが${features['mouthSize']}で、対人関係とコミュニケーション能力に優れています。',
+          '額が${features['foreheadSize']}で、知恵と思考力に優れ、学問的成就が期待されます。',
+          '全体的にバランスの取れた顔の構造で、健康と長寿の相を持っています。',
+        ];
+      case 'vi':
+        return [
+          'Khuôn mặt của bạn là ${features['faceShape']}, cho thấy khả năng lãnh đạo và quyết đoán xuất sắc.',
+          'Kích thước mắt của bạn là ${features['eyeSize']}, cho thấy khả năng quan sát và sáng suốt vượt trội.',
+          'Bạn có ${features['noseShape']}, gợi ý vận may về tài chính tốt và tiềm năng thành công cao.',
+          'Kích thước miệng của bạn là ${features['mouthSize']}, cho thấy kỹ năng giao tiếp xuất sắc.',
+          'Trán của bạn ${features['foreheadSize']}, cho thấy trí tuệ và tư duy xuất sắc, tiềm năng thành tựu học thuật.',
+          'Nhìn chung, cấu trúc khuôn mặt cân đối, có tướng sống lâu và khỏe mạnh.',
+        ];
+      case 'ar':
+        return [
+          'شكل وجهك هو ${features['faceShape']}، مما يشير إلى قيادة وحزم ممتازين.',
+          'حجم عينيك ${features['eyeSize']}، يظهر بصيرة ومهارات ملاحظة متفوقة.',
+          'لديك ${features['noseShape']}، مما يشير إلى حظ جيد وإمكانية نجاح عالية.',
+          'حجم فمك ${features['mouthSize']}، يشير إلى مهارات اتصال وعلاقات شخصية ممتازة.',
+          'جبهتك ${features['foreheadSize']}، تظهر حكمة وقدرة تفكير استثنائية، إمكانية إنجاز أكاديمي.',
+          'بشكل عام، لديك بنية وجه متوازنة تشير إلى الصحة وطول العمر.',
+        ];
+      default:
+        return [
+          'Your face shape is ${features['faceShape']}, indicating excellent leadership and decisiveness.',
+          'Your eye size is ${features['eyeSize']}, showing superior insight and observation skills.',
+          'You have ${features['noseShape']}, suggesting good fortune and high success potential.',
+          'Your mouth size is ${features['mouthSize']}, indicating excellent interpersonal and communication skills.',
+          'Your forehead is ${features['foreheadSize']}, showing exceptional wisdom and academic achievement potential.',
+          'Overall, you have a well-balanced facial structure indicating health and longevity.',
+        ];
+    }
+  }
+
+  static List<String> _generatePalmAnalysisText(String languageCode) {
+    switch (languageCode) {
+      case 'ko':
+        return [
+          '생명선이 길고 깊어 건강하고 장수할 상입니다. 체력이 좋고 생명력이 강합니다.',
+          '지능선이 명확하게 나타나 있어 판단력과 지적 능력이 뛰어납니다.',
+          '감정선이 길고 깊어 애정운이 좋으며 깊은 사랑을 나눌 수 있습니다.',
+          '운명선이 보이며 자신의 길을 찾아 성공할 가능성이 높습니다.',
+          '재물선이 나타나 있어 경제적으로 안정되고 부를 축적할 수 있습니다.',
+          '전반적으로 균형잡힌 손금으로 행운과 성공의 가능성이 높습니다.',
+        ];
+      case 'en':
+        return [
+          'Your life line is long and deep, indicating good health and longevity. Strong vitality and physical strength.',
+          'Your head line is clear, showing excellent judgment and intellectual abilities.',
+          'Your heart line is long and deep, indicating good romance and ability to share deep love.',
+          'Your fate line is visible, showing high potential to find your path and succeed.',
+          'Your wealth line is present, indicating financial stability and ability to accumulate wealth.',
+          'Overall, well-balanced palm lines indicating high potential for luck and success.',
+        ];
+      case 'zh':
+        return [
+          '生命线长而深，表示健康长寿。体力好，生命力强。',
+          '智慧线清晰，显示判断力和智力能力出色。',
+          '感情线长而深，表示爱情运好，能够分享深厚的爱。',
+          '命运线可见，显示找到自己道路并成功的可能性高。',
+          '财富线出现，表示财务稳定，能够积累财富。',
+          '总体而言，手纹平衡，幸运和成功的可能性高。',
+        ];
+      case 'ja':
+        return [
+          '生命線が長く深いため、健康で長寿の相です。体力が良く、生命力が強いです。',
+          '知能線が明確に表れており、判断力と知的能力に優れています。',
+          '感情線が長く深く、恋愛運が良く、深い愛を分かち合えます。',
+          '運命線が見え、自分の道を見つけて成功する可能性が高いです。',
+          '財運線が表れており、経済的に安定し、富を蓄積できます。',
+          '全体的にバランスの取れた手相で、幸運と成功の可能性が高いです。',
+        ];
+      case 'vi':
+        return [
+          'Đường sự sống của bạn dài và sâu, cho thấy sức khỏe tốt và sống lâu. Sức sống mạnh mẽ.',
+          'Đường trí tuệ rõ ràng, cho thấy khả năng phán đoán và trí tuệ xuất sắc.',
+          'Đường tình cảm dài và sâu, cho thấy vận may trong tình yêu và khả năng chia sẻ tình yêu sâu sắc.',
+          'Đường số mệnh hiện rõ, cho thấy khả năng cao tìm thấy con đường và thành công.',
+          'Đường tài lộc xuất hiện, cho thấy sự ổn định tài chính và khả năng tích lũy của cải.',
+          'Nhìn chung, các đường chỉ tay cân đối, tiềm năng may mắn và thành công cao.',
+        ];
+      case 'ar':
+        return [
+          'خط حياتك طويل وعميق، يشير إلى صحة جيدة وطول عمر. حيوية قوية وقوة بدنية.',
+          'خط رأسك واضح، يظهر حكماً وقدرات فكرية ممتازة.',
+          'خط قلبك طويل وعميق، يشير إلى حظ جيد في الحب وقدرة على مشاركة حب عميق.',
+          'خط مصيرك مرئي، يظهر إمكانية عالية لإيجاد طريقك والنجاح.',
+          'خط ثروتك موجود، يشير إلى استقرار مالي وقدرة على تراكم الثروة.',
+          'بشكل عام، خطوط كف متوازنة تشير إلى إمكانية عالية للحظ والنجاح.',
+        ];
+      default:
+        return [
+          'Your life line is long and deep, indicating good health and longevity. Strong vitality and physical strength.',
+          'Your head line is clear, showing excellent judgment and intellectual abilities.',
+          'Your heart line is long and deep, indicating good romance and ability to share deep love.',
+          'Your fate line is visible, showing high potential to find your path and succeed.',
+          'Your wealth line is present, indicating financial stability and ability to accumulate wealth.',
+          'Overall, well-balanced palm lines indicating high potential for luck and success.',
+        ];
+    }
   }
 }
