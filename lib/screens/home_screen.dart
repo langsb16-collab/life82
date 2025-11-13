@@ -212,7 +212,7 @@ class HomePage extends StatelessWidget {
                       _FeatureItem(
                         title: localization.translate('face_reading'),
                         subtitle: localization.translate('face_reading_subtitle'),
-                        icon: Icons.face,
+                        icon: Icons.face_retouching_natural,
                         gradient: const LinearGradient(
                           colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
                         ),
@@ -246,7 +246,7 @@ class HomePage extends StatelessWidget {
                       _FeatureItem(
                         title: localization.translate('today_fortune'),
                         subtitle: localization.translate('today_fortune_subtitle'),
-                        icon: Icons.wb_sunny,
+                        icon: Icons.auto_awesome,
                         gradient: const LinearGradient(
                           colors: [Color(0xFFFFD93D), Color(0xFFFF6B6B)],
                         ),
@@ -477,7 +477,7 @@ class _FeatureGrid extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1.1,
+          childAspectRatio: 1.2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
@@ -605,38 +605,57 @@ class _PromotionBanner extends StatelessWidget {
                         localization.translate('promo_title'),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 13,
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(
-                          localization.translate('promo_highlight'),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Color(0xFFFF6B6B),
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              localization.translate('promo_free_trial_line1'),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Color(0xFFFF6B6B),
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                height: 1.3,
+                              ),
+                            ),
+                            Text(
+                              localization.translate('promo_free_trial_line2'),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Color(0xFFFF6B6B),
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Text(
                         localization.translate('promo_subtitle'),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 9,
                         ),
                       ),
                     ],
