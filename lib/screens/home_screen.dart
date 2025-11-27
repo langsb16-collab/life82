@@ -353,7 +353,7 @@ class HomePage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                         child: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: EdgeInsets.all(constraints.maxWidth > 1200 ? 40 : 20),
                           decoration: BoxDecoration(
                             color: Colors.blue.shade50,
                             borderRadius: BorderRadius.circular(16),
@@ -361,13 +361,17 @@ class HomePage extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.info_outline, color: Colors.blue.shade700, size: 24),
-                              const SizedBox(width: 12),
+                              Icon(
+                                Icons.info_outline, 
+                                color: Colors.blue.shade700, 
+                                size: constraints.maxWidth > 1200 ? 48 : 24,  // PC: 100% 확대
+                              ),
+                              SizedBox(width: constraints.maxWidth > 1200 ? 24 : 12),
                               Expanded(
                                 child: Text(
                                   localization.translate('disclaimer'),
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: constraints.maxWidth > 1200 ? 28 : 14,  // PC: 100% 확대
                                     color: Colors.blue.shade900,
                                     height: 1.4,
                                   ),
@@ -467,7 +471,7 @@ class _SectionHeader extends StatelessWidget {
         
         if (constraints.maxWidth > 1200) {
           horizontalPadding = 80;
-          fontSize = 22;
+          fontSize = 44;  // PC: 100% 확대 (22 → 44)
         } else if (constraints.maxWidth > 768) {
           horizontalPadding = 40;
           fontSize = 20;
@@ -484,15 +488,15 @@ class _SectionHeader extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 5,
-                height: 28,
+                width: constraints.maxWidth > 1200 ? 10 : 5,  // PC: 100% 확대
+                height: constraints.maxWidth > 1200 ? 56 : 28,  // PC: 100% 확대
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
                   ),
-                  borderRadius: BorderRadius.circular(2.5),
+                  borderRadius: BorderRadius.circular(constraints.maxWidth > 1200 ? 5 : 2.5),
                 ),
               ),
               const SizedBox(width: 12),
@@ -587,64 +591,74 @@ class _FeatureItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradient,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // PC 화면에서만 글자와 아이콘 크기 100% 확대
+        final isPCScreen = MediaQuery.of(context).size.width > 1200;
+        final double titleFontSize = isPCScreen ? 28 : 14;  // PC: 100% 확대 (14 → 28)
+        final double subtitleFontSize = isPCScreen ? 24 : 12;  // PC: 100% 확대 (12 → 24)
+        final double effectiveIconSize = isPCScreen ? (iconSize ?? 40) * 2 : (iconSize ?? 40);  // PC: 100% 확대
+        
+        return Container(
+          decoration: BoxDecoration(
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(20),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, color: Colors.white, size: iconSize ?? 40),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(isPCScreen ? 16 : 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(icon, color: Colors.white, size: effectiveIconSize),
+                    ),
+                    SizedBox(height: isPCScreen ? 12 : 8),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: titleFontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: isPCScreen ? 8 : 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        fontSize: subtitleFontSize,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 12,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -653,6 +667,14 @@ class _PromotionBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = context.watch<LocalizationService>();
+    final isPCScreen = MediaQuery.of(context).size.width > 1200;
+    
+    // PC 화면에서만 글자 크기 100% 확대
+    final double titleFontSize = isPCScreen ? 30 : 15;
+    final double promoTextFontSize = isPCScreen ? 24 : 12;
+    final double subtitleFontSize = isPCScreen ? 24 : 12;
+    final double iconSize = isPCScreen ? 36 : 18;
+    final double padding = isPCScreen ? 32.0 : 16.0;
     
     return Container(
       decoration: BoxDecoration(
@@ -676,7 +698,7 @@ class _PromotionBanner extends StatelessWidget {
           onTap: () => _showPromoDialog(context),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(padding),
             child: Row(
               children: [
                 Expanded(
@@ -688,15 +710,18 @@ class _PromotionBanner extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: titleFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: isPCScreen ? 12 : 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isPCScreen ? 20 : 10,
+                          vertical: isPCScreen ? 12 : 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
@@ -708,9 +733,9 @@ class _PromotionBanner extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xFFFF6B6B),
-                                fontSize: 12,
+                                fontSize: promoTextFontSize,
                                 fontWeight: FontWeight.bold,
                                 height: 1.3,
                               ),
@@ -720,9 +745,9 @@ class _PromotionBanner extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xFFFF6B6B),
-                                fontSize: 12,
+                                fontSize: promoTextFontSize,
                                 fontWeight: FontWeight.bold,
                                 height: 1.3,
                               ),
@@ -730,23 +755,23 @@ class _PromotionBanner extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: isPCScreen ? 8 : 4),
                       Text(
                         localization.translate('promo_subtitle'),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: subtitleFontSize,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
-                  size: 18,
+                  size: iconSize,
                 ),
               ],
             ),
@@ -831,6 +856,17 @@ class _SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = context.watch<LocalizationService>();
+    final isPCScreen = MediaQuery.of(context).size.width > 1200;
+    
+    // PC 화면에서만 글자와 아이콘 크기 100% 확대
+    final double titleFontSize = isPCScreen ? 36 : 18;
+    final double subtitleFontSize = isPCScreen ? 28 : 14;
+    final double iconSize = isPCScreen ? 80 : 40;
+    final double arrowIconSize = isPCScreen ? 36 : 18;
+    final double padding = isPCScreen ? 40.0 : 20.0;
+    final double iconPadding = isPCScreen ? 24 : 12;
+    final double spacing = isPCScreen ? 32 : 16;
+    final double verticalSpacing = isPCScreen ? 8 : 4;
     
     return Container(
       decoration: BoxDecoration(
@@ -857,49 +893,49 @@ class _SignupButton extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(padding),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(iconPadding),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.person_add,
                     color: Colors.white,
-                    size: 40,
+                    size: iconSize,
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: spacing),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         localization.translate('signup_cta_title'),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: titleFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: verticalSpacing),
                       Text(
                         localization.translate('signup_cta_subtitle'),
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.9),
-                          fontSize: 14,
+                          fontSize: subtitleFontSize,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white,
-                  size: 18,
+                  size: arrowIconSize,
                 ),
               ],
             ),
