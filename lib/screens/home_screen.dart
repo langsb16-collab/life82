@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
           slivers: [
             // MZ 스타일 헤더
             SliverAppBar(
-              expandedHeight: 100,
+              expandedHeight: 140,
               floating: true,
               pinned: false,
               backgroundColor: Colors.white,
@@ -127,18 +127,18 @@ class HomePage extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16,
+                                  fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 0.5,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 8),
                             Text(
                               localization.translate('global_service'),
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 11,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -164,20 +164,20 @@ class HomePage extends StatelessWidget {
                               onTap: () => _showLanguageDialog(context),
                               borderRadius: BorderRadius.circular(20),
                               child: Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(16),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const Icon(
                                       Icons.language,
                                       color: Colors.white,
-                                      size: 16,
+                                      size: 32,
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: 8),
                                     Text(
                                       LocalizationService.supportedLanguages
                                           .firstWhere((l) => l['code'] == localization.currentLanguage)['flag']!,
-                                      style: const TextStyle(fontSize: 14),
+                                      style: const TextStyle(fontSize: 28),
                                     ),
                                   ],
                                 ),
