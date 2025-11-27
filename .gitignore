@@ -24,3 +24,9 @@ Thumbs.db
 
 # Keep lib/ directory for source code!
 
+# Web build files should be in docs/ only
+index.html
+*.js
+favicon.png
+manifest.json
+version.json
