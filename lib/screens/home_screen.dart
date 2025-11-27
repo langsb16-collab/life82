@@ -229,7 +229,7 @@ class HomePage extends StatelessWidget {
                   
                   return Column(
                     children: [
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),  // 16 → 8 (50% 축소)
                       
                       // 프로모션 배너
                       Padding(
@@ -237,7 +237,7 @@ class HomePage extends StatelessWidget {
                         child: _PromotionBanner(),
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),  // 16 → 8 (50% 축소)
                       
                       // 회원가입 버튼
                       Padding(
@@ -245,11 +245,11 @@ class HomePage extends StatelessWidget {
                         child: _SignupButton(),
                       ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),  // 24 → 12 (50% 축소)
                   
                   // AI 분석 섹션
                   _SectionHeader(title: localization.translate('ai_analysis')),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),  // 12 → 6 (50% 축소)
                   _FeatureGrid(
                     items: [
                       _FeatureItem(
@@ -279,11 +279,11 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),  // 32 → 16 (50% 축소)
                   
                   // 데일리 운세 섹션
                   _SectionHeader(title: localization.translate('daily_fortune')),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),  // 12 → 6 (50% 축소)
                   _FeatureGrid(
                     items: [
                       _FeatureItem(
@@ -342,11 +342,11 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),  // 32 → 16 (50% 축소)
                   
                   // 성격 분석 섹션
                   _SectionHeader(title: localization.translate('personality')),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),  // 12 → 6 (50% 축소)
                   _FeatureGrid(
                     items: [
                       _FeatureItem(
@@ -380,13 +380,13 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),  // 24 → 12 (50% 축소)
                   
-                      // 안내 문구
+                      // 안내 문구 (50% 축소)
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                         child: Container(
-                          padding: EdgeInsets.all(constraints.maxWidth > 1200 ? 40 : 20),
+                          padding: EdgeInsets.all(constraints.maxWidth > 1200 ? 20 : 10),  // 40→20, 20→10
                           decoration: BoxDecoration(
                             color: Colors.blue.shade50,
                             borderRadius: BorderRadius.circular(16),
@@ -397,14 +397,14 @@ class HomePage extends StatelessWidget {
                               Icon(
                                 Icons.info_outline, 
                                 color: Colors.blue.shade700, 
-                                size: constraints.maxWidth > 1200 ? 48 : 24,  // PC: 100% 확대
+                                size: constraints.maxWidth > 1200 ? 24 : 16,  // 48→24, 24→16
                               ),
-                              SizedBox(width: constraints.maxWidth > 1200 ? 24 : 12),
+                              SizedBox(width: constraints.maxWidth > 1200 ? 12 : 8),  // 24→12, 12→8
                               Expanded(
                                 child: Text(
                                   localization.translate('disclaimer'),
                                   style: TextStyle(
-                                    fontSize: constraints.maxWidth > 1200 ? 28 : 14,  // PC: 100% 확대
+                                    fontSize: constraints.maxWidth > 1200 ? 14 : 11,  // 28→14, 14→11
                                     color: Colors.blue.shade900,
                                     height: 1.4,
                                   ),
@@ -415,13 +415,13 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),  // 32→16
                       
-                      // 사업자 정보
+                      // 사업자 정보 (50% 축소)
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                         child: Container(
-                          padding: EdgeInsets.all(constraints.maxWidth > 1200 ? 32 : 16),
+                          padding: EdgeInsets.all(constraints.maxWidth > 1200 ? 16 : 10),  // 32→16, 16→10
                           decoration: BoxDecoration(
                             color: Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(12),
@@ -433,25 +433,25 @@ class HomePage extends StatelessWidget {
                               Text(
                                 '등록번호 : 572-68-00752   상호 : 캐쉬 아이큐(CASH IQ)   대표 : 박용균',
                                 style: TextStyle(
-                                  fontSize: constraints.maxWidth > 1200 ? 24 : 12,
+                                  fontSize: constraints.maxWidth > 1200 ? 12 : 10,  // 24→12, 12→10
                                   color: Colors.grey.shade700,
                                   height: 1.6,
                                 ),
                               ),
-                              SizedBox(height: constraints.maxWidth > 1200 ? 8 : 4),
+                              SizedBox(height: constraints.maxWidth > 1200 ? 4 : 2),  // 8→4, 4→2
                               Text(
                                 '사업장소재지 : 서울특별시 강남구 테헤란로82길 15, 614호(대치동)',
                                 style: TextStyle(
-                                  fontSize: constraints.maxWidth > 1200 ? 24 : 12,
+                                  fontSize: constraints.maxWidth > 1200 ? 12 : 10,  // 24→12, 12→10
                                   color: Colors.grey.shade700,
                                   height: 1.6,
                                 ),
                               ),
-                              SizedBox(height: constraints.maxWidth > 1200 ? 8 : 4),
+                              SizedBox(height: constraints.maxWidth > 1200 ? 4 : 2),  // 8→4, 4→2
                               Text(
                                 '업태: 정보통신업   종목: 소프트웨어 개발 및 공급업',
                                 style: TextStyle(
-                                  fontSize: constraints.maxWidth > 1200 ? 24 : 12,
+                                  fontSize: constraints.maxWidth > 1200 ? 12 : 10,  // 24→12, 12→10
                                   color: Colors.grey.shade700,
                                   height: 1.6,
                                 ),
@@ -461,7 +461,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),  // 32→16
                     ],
                   );
                 },
@@ -610,24 +610,24 @@ class _FeatureGrid extends StatelessWidget {
         double horizontalPadding;
         
         if (constraints.maxWidth > 1200) {
-          // PC 환경 (대형 화면)
+          // PC 환경 (대형 화면) - 50% 축소
           crossAxisCount = 4;
-          childAspectRatio = 1.1;
+          childAspectRatio = 2.2;  // 1.1 → 2.2 (세로 높이 50% 축소)
           horizontalPadding = 80;
         } else if (constraints.maxWidth > 768) {
-          // 태블릿 환경
+          // 태블릿 환경 - 50% 축소
           crossAxisCount = 3;
-          childAspectRatio = 1.15;
+          childAspectRatio = 2.3;  // 1.15 → 2.3
           horizontalPadding = 40;
         } else if (constraints.maxWidth > 600) {
-          // 태블릿 세로 모드
+          // 태블릿 세로 모드 - 50% 축소
           crossAxisCount = 2;
-          childAspectRatio = 1.2;
+          childAspectRatio = 2.4;  // 1.2 → 2.4
           horizontalPadding = 24;
         } else {
-          // 모바일 환경
+          // 모바일 환경 - 50% 축소
           crossAxisCount = 2;
-          childAspectRatio = 1.2;
+          childAspectRatio = 2.4;  // 1.2 → 2.4
           horizontalPadding = 16;
         }
         
@@ -749,11 +749,11 @@ class _PromotionBanner extends StatelessWidget {
     final isPCScreen = MediaQuery.of(context).size.width > 1200;
     
     // 요청사항: 1) 주황색 배너 높이 축소 (50%), 2) 흰색 사각형 왼쪽, 환불규정 오른쪽 배치
-    final double titleFontSize = 18;  // 특별 프로모션 (축소)
-    final double subtitleFontSize = 16;  // 48,000원으로 1년 (축소)
-    final double promoTextFontSize = 13;  // 흰색 사각형 텍스트 (축소)
-    final double refundTextSize = 11;  // 환불규정 텍스트 (축소)
-    final double padding = 8.0;  // 배너 패딩 (축소)
+    final double titleFontSize = 14;  // 특별 프로모션 (50% 축소: 18 → 14)
+    final double subtitleFontSize = 12;  // 48,000원으로 1년 (50% 축소: 16 → 12)
+    final double promoTextFontSize = 10;  // 흰색 사각형 텍스트 (50% 축소: 13 → 10)
+    final double refundTextSize = 9;  // 환불규정 텍스트 (50% 축소: 11 → 9)
+    final double padding = 6.0;  // 배너 패딩 (50% 축소: 8 → 6)
     
     return Container(
       decoration: BoxDecoration(
@@ -1012,15 +1012,15 @@ class _SignupButton extends StatelessWidget {
     final localization = context.watch<LocalizationService>();
     final isPCScreen = MediaQuery.of(context).size.width > 1200;
     
-    // PC 화면에서만 글자와 아이콘 크기 100% 확대
-    final double titleFontSize = isPCScreen ? 36 : 18;
-    final double subtitleFontSize = isPCScreen ? 28 : 14;
-    final double iconSize = isPCScreen ? 80 : 40;
-    final double arrowIconSize = isPCScreen ? 36 : 18;
-    final double padding = isPCScreen ? 40.0 : 20.0;
-    final double iconPadding = isPCScreen ? 24 : 12;
-    final double spacing = isPCScreen ? 32 : 16;
-    final double verticalSpacing = isPCScreen ? 8 : 4;
+    // 50% 축소된 크기
+    final double titleFontSize = isPCScreen ? 18 : 14;  // PC: 36→18, Mobile: 18→14
+    final double subtitleFontSize = isPCScreen ? 14 : 11;  // PC: 28→14, Mobile: 14→11
+    final double iconSize = isPCScreen ? 40 : 28;  // PC: 80→40, Mobile: 40→28
+    final double arrowIconSize = isPCScreen ? 18 : 14;  // PC: 36→18, Mobile: 18→14
+    final double padding = isPCScreen ? 20.0 : 12.0;  // PC: 40→20, Mobile: 20→12
+    final double iconPadding = isPCScreen ? 12 : 8;  // PC: 24→12, Mobile: 12→8
+    final double spacing = isPCScreen ? 16 : 10;  // PC: 32→16, Mobile: 16→10
+    final double verticalSpacing = isPCScreen ? 4 : 2;  // PC: 8→4, Mobile: 4→2
     
     return Container(
       decoration: BoxDecoration(
