@@ -123,33 +123,40 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // 타이틀
-                      Center(
+                      // 타이틀 (왼쪽 정렬, 2줄, 30% 축소)
+                      Positioned(
+                        left: 16,
+                        top: 0,
+                        bottom: 0,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                localization.translate('app_title'),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
                             Text(
-                              localization.translate('global_service'),
+                              '✨ 운세의 신',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Oracle AI',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              localization.translate('global_service'),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -1438,23 +1445,23 @@ class _ChatbotFloatingButtonState extends State<_ChatbotFloatingButton>
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  // AI Badge
+                  // AI Badge (100% 확대)
                   Positioned(
-                    top: -6,
-                    right: -6,
+                    top: -8,
+                    right: -8,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+                        horizontal: 16,
+                        vertical: 8,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.red.withValues(alpha: 0.4),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
+                            color: Colors.red.withValues(alpha: 0.5),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
                           ),
                         ],
                       ),
@@ -1462,7 +1469,7 @@ class _ChatbotFloatingButtonState extends State<_ChatbotFloatingButton>
                         'AI',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1493,14 +1500,14 @@ class _ChatbotFloatingButtonState extends State<_ChatbotFloatingButton>
                     ),
                   ],
                 ),
-                child: FloatingActionButton(
+                child: FloatingActionButton.large(
                   onPressed: widget.onTap,
                   backgroundColor: const Color(0xFF667EEA),
                   elevation: 0,
                   child: const Icon(
                     Icons.chat_bubble,
                     color: Colors.white,
-                    size: 28,
+                    size: 56,
                   ),
                 ),
               ),

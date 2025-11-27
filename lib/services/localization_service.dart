@@ -150,7 +150,7 @@ class LocalizationService extends ChangeNotifier {
       'signup_success_message': '회원가입이 완료되었습니다. 12개월 프리미엄 서비스를 즐기세요!',
       'confirm': '확인',
       'error': '오류',
-      'global_service': '🌍 글로벌 서비스',
+      'global_service': '🌍 글로벌 6개국어 서비스',
       'language': '언어',
       // Chatbot
       'chatbot': '챗봇',
@@ -416,7 +416,7 @@ This refund and cancellation policy may change due to legal amendments or servic
       'signup_success_message': 'Registration complete! Enjoy 12-month premium service!',
       'confirm': 'Confirm',
       'error': 'Error',
-      'global_service': '🌍 Global Service',
+      'global_service': '🌍 Global 6-Language Service',
       'language': 'Language',
       // Chatbot
       'chatbot': 'Chatbot',
@@ -632,7 +632,7 @@ This refund and cancellation policy may change due to legal amendments or servic
       'signup_success_message': '注册完成！享受12个月高级服务！',
       'confirm': '确认',
       'error': '错误',
-      'global_service': '🌍 全球服务',
+      'global_service': '🌍 全球6国语言服务',
       'language': '语言',
       // Chatbot
       'chatbot': '聊天机器人',
@@ -848,7 +848,7 @@ This refund and cancellation policy may change due to legal amendments or servic
       'signup_success_message': '登録完了！12ヶ月プレミアムサービスをお楽しみください！',
       'confirm': '確認',
       'error': 'エラー',
-      'global_service': '🌍 グローバル',
+      'global_service': '🌍 グローバル6ヶ国語サービス',
       'language': '言語',
       // Chatbot
       'chatbot': 'チャットボット',
