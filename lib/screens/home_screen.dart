@@ -11,6 +11,7 @@ import 'my_reports_screen.dart';
 import 'today_fortune_screen.dart';
 import 'zodiac_screen.dart';
 import 'mbti_screen.dart';
+import 'enneagram_screen.dart';
 import 'signup_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -359,6 +360,20 @@ class HomePage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const MbtiScreen()),
+                          );
+                        },
+                      ),
+                      _FeatureItem(
+                        title: localization.translate('enneagram'),
+                        subtitle: localization.translate('enneagram_subtitle'),
+                        icon: Icons.filter_9_plus,
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const EnneagramScreen()),
                           );
                         },
                       ),
