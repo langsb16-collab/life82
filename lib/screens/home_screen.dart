@@ -44,11 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
-      body: screens[_selectedIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showChatbot(context),
-        backgroundColor: const Color(0xFF667EEA),
-        child: const Icon(Icons.chat_bubble, color: Colors.white),
+      body: Stack(
+        children: [
+          screens[_selectedIndex],
+          // Chatbot Button with Tooltip Bubble
+          Positioned(
+            right: 16,
+            bottom: 80,
+            child: _ChatbotFloatingButton(onTap: () => _showChatbot(context)),
+          ),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
@@ -1346,6 +1351,169 @@ class _ChatbotDialogState extends State<ChatbotDialog> {
               ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+// Chatbot Floating Button with Animated Tooltip
+class _ChatbotFloatingButton extends StatefulWidget {
+  final VoidCallback onTap;
+  
+  const _ChatbotFloatingButton({required this.onTap});
+
+  @override
+  State<_ChatbotFloatingButton> createState() => _ChatbotFloatingButtonState();
+}
+
+class _ChatbotFloatingButtonState extends State<_ChatbotFloatingButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
+    
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    
+    _fadeAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final localization = context.watch<LocalizationService>();
+    
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // Speech Bubble Tooltip
+        AnimatedBuilder(
+          animation: _fadeAnimation,
+          builder: (context, child) {
+            return Opacity(
+              opacity: _fadeAnimation.value,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // Main Bubble
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 200),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFF667EEA).withValues(alpha: 0.3),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      localization.translate('chatbot_greeting'),
+                      style: TextStyle(
+                        color: Colors.grey.shade800,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  // AI Badge
+                  Positioned(
+                    top: -6,
+                    right: -6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.red.withValues(alpha: 0.4),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: const Text(
+                        'AI',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        
+        const SizedBox(height: 12),
+        
+        // Floating Action Button
+        AnimatedBuilder(
+          animation: _scaleAnimation,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _scaleAnimation.value,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF667EEA).withValues(alpha: 0.4),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: FloatingActionButton(
+                  onPressed: widget.onTap,
+                  backgroundColor: const Color(0xFF667EEA),
+                  elevation: 0,
+                  child: const Icon(
+                    Icons.chat_bubble,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ],
     );
