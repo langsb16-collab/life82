@@ -66,6 +66,56 @@ class LocalizationService extends ChangeNotifier {
       'promo_free_trial_line2': '2회 무료체험',
       'promo_description': '지금 가입하면 12개월 프리미엄 서비스를\n특별 가격에 이용하실 수 있습니다!',
       'promo_button': '지금 시작하기',
+      'refund_policy': '환불규정',
+      'refund_policy_title': '환불 규정 (구독 서비스 환불 및 취소 규정)',
+      'refund_policy_content': '''1. 적용 범위
+본 규정은 당사가 제공하는 모든 인터넷 기반 유료 구독서비스(이하 "서비스")에 적용됩니다.
+
+2. 구독 결제 및 갱신
+• 서비스는 월간/연간 단위로 자동 결제됩니다.
+• 사용자는 결제일 이전에 마이페이지 또는 고객센터를 통해 자동 갱신을 해지할 수 있습니다.
+• 자동 갱신 해지 시, 이미 결제된 기간의 서비스는 만료일까지 정상 제공됩니다.
+
+3. 환불 규정
+
+3-1. 단순 변심 환불
+월간 구독(30일 기준)
+• 결제일로부터 7일 이내이면서 서비스 이용량이 전체의 10% 이하일 경우: 전액 환불
+• 결제일로부터 7일 초과 시: 환불 불가
+
+연간 구독(365일 기준)
+• 결제일로부터 14일 이내이며 서비스 이용량이 전체의 10% 이하일 경우: 전액 환불
+• 결제일로부터 14일 초과 시: 남은 기간 기준 부분 환불
+• 부분 환불 금액 = 결제금액 – 사용된 개월 수 × 월 요율 – 위약금(총액의 10% 이내)
+
+3-2. 서비스 장애·오류로 인한 환불
+• 24시간 이상 지속되는 서비스 중단 또는 기능 불능이 발생할 경우 이용자는 환불 또는 기간 연장을 요청할 수 있습니다.
+• 중단 기간이 72시간을 초과할 경우 미사용 일수에 대해 비례 환불합니다.
+
+3-3. 불가항력 사유
+• 천재지변, 전쟁, 국가 비상사태 등 외부 요인으로 인한 서비스 중단은 환불 대상에서 제외될 수 있습니다.
+
+4. 해지 규정
+• 해지 요청 즉시 다음 결제일부터 자동 결제가 중단됩니다.
+• 해지 시점과 관계없이 이미 결제된 금액은 환불 규정에 따라 처리됩니다.
+
+5. 환불 신청 방법
+고객센터 또는 이메일로 아래 정보를 제출해야 합니다.
+• 가입 이메일
+• 결제 내역(결제일·금액)
+• 환불 사유
+
+당사는 접수 후 5영업일 이내 환불 가능 여부를 회신합니다.
+환불 승인 시 결제 수단 기준 최대 7영업일 이내 환불이 처리됩니다.
+
+6. 부정 이용 환불 불가
+다음의 경우 환불이 제한될 수 있습니다.
+• 계정 공유, 시스템 악용 등 약관 위반
+• 환불 반복 요청 등 비정상 이용 패턴
+• 제3자의 결제수단을 무단 사용한 경우
+
+7. 규정 변경
+본 환불 및 취소 규정은 법령 개정 또는 서비스 정책에 따라 변경될 수 있으며, 변경 시 최소 7일 전에 공지합니다.''',
       // Signup
       'signup_cta_title': '회원가입',
       'signup_cta_subtitle': '12개월 프리미엄 서비스 시작하기',
@@ -247,6 +297,56 @@ class LocalizationService extends ChangeNotifier {
       'promo_free_trial_line2': '2 Free Trials',
       'promo_description': 'Sign up now for 12-month\npremium service at special price!',
       'promo_button': 'Get Started',
+      'refund_policy': 'Refund Policy',
+      'refund_policy_title': 'Refund Policy (Subscription Service Refund and Cancellation Policy)',
+      'refund_policy_content': '''1. Scope of Application
+This policy applies to all internet-based paid subscription services (hereinafter "Services") provided by us.
+
+2. Subscription Payment and Renewal
+• Services are automatically charged on a monthly/annual basis.
+• Users can cancel auto-renewal through My Page or Customer Service before the payment date.
+• When auto-renewal is canceled, services for the already paid period will continue until expiration.
+
+3. Refund Policy
+
+3-1. Simple Change of Mind Refund
+Monthly Subscription (30-day basis)
+• Full refund: Within 7 days from payment date AND service usage is 10% or less of total
+• No refund: After 7 days from payment date
+
+Annual Subscription (365-day basis)
+• Full refund: Within 14 days from payment date AND service usage is 10% or less of total
+• Partial refund for remaining period: After 14 days from payment date
+• Partial refund amount = Payment amount – Used months × Monthly rate – Penalty (up to 10% of total)
+
+3-2. Refund Due to Service Failure or Error
+• Users can request refund or period extension if service disruption or malfunction lasts 24+ hours.
+• Proportional refund for unused days if disruption exceeds 72 hours.
+
+3-3. Force Majeure
+• Service disruptions due to natural disasters, war, national emergencies may be excluded from refunds.
+
+4. Cancellation Policy
+• Auto-payment stops from next billing date upon cancellation request.
+• Already paid amounts are processed according to refund policy regardless of cancellation timing.
+
+5. Refund Request Process
+Submit the following information via Customer Service or email:
+• Registered email
+• Payment details (date, amount)
+• Refund reason
+
+We will respond within 5 business days.
+Approved refunds will be processed within 7 business days based on payment method.
+
+6. No Refund for Fraudulent Use
+Refunds may be denied for:
+• Terms violations (account sharing, system abuse)
+• Abnormal usage patterns (repeated refund requests)
+• Unauthorized use of third-party payment methods
+
+7. Policy Changes
+This refund and cancellation policy may change due to legal amendments or service policy updates. Changes will be announced at least 7 days in advance.''',
       // Signup
       'signup_cta_title': 'Sign Up',
       'signup_cta_subtitle': 'Start 12-Month Premium Service',

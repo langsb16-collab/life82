@@ -817,10 +817,85 @@ class _PromotionBanner extends StatelessWidget {
                     ),
                   ),
                 ),
+                
+                SizedBox(height: isPCScreen ? 16 : 8),
+                
+                // 환불규정 버튼
+                TextButton(
+                  onPressed: () => _showRefundPolicyDialog(context),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isPCScreen ? 24 : 12,
+                      vertical: isPCScreen ? 16 : 8,
+                    ),
+                  ),
+                  child: Text(
+                    localization.translate('refund_policy'),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: isPCScreen ? 28 : 14,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showRefundPolicyDialog(BuildContext context) {
+    final localization = context.read<LocalizationService>();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isPCScreen = screenWidth > 1200;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          localization.translate('refund_policy_title'),
+          style: TextStyle(
+            fontSize: isPCScreen ? 24 : 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Container(
+          width: isPCScreen ? 800 : screenWidth * 0.9,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.7,
+          ),
+          child: SingleChildScrollView(
+            child: Text(
+              localization.translate('refund_policy_content'),
+              style: TextStyle(
+                fontSize: isPCScreen ? 16 : 14,
+                height: 1.6,
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: isPCScreen ? 32 : 24,
+                vertical: isPCScreen ? 16 : 12,
+              ),
+            ),
+            child: Text(
+              '닫기',
+              style: TextStyle(
+                fontSize: isPCScreen ? 18 : 16,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
