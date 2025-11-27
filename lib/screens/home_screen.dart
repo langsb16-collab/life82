@@ -715,11 +715,12 @@ class _PromotionBanner extends StatelessWidget {
     final localization = context.watch<LocalizationService>();
     final isPCScreen = MediaQuery.of(context).size.width > 1200;
     
-    // 요청사항: 1) 흰색 사각형 위로 상승, 2) 주황색 배너 크기 50% 축소
-    final double titleFontSize = 30;  // 특별 프로모션 - 200% 확대
-    final double subtitleFontSize = 24;  // 48,000원으로 1년 - 200% 확대
-    final double promoTextFontSize = 24;  // 흰색 사각형 텍스트 - 200% 확대
-    final double padding = 8.0;  // 배너 패딩 50% 축소 (16 → 8)
+    // 요청사항: 1) 주황색 배너 높이 축소 (50%), 2) 흰색 사각형 왼쪽, 환불규정 오른쪽 배치
+    final double titleFontSize = 18;  // 특별 프로모션 (축소)
+    final double subtitleFontSize = 16;  // 48,000원으로 1년 (축소)
+    final double promoTextFontSize = 13;  // 흰색 사각형 텍스트 (축소)
+    final double refundTextSize = 11;  // 환불규정 텍스트 (축소)
+    final double padding = 8.0;  // 배너 패딩 (축소)
     
     return Container(
       decoration: BoxDecoration(
@@ -744,96 +745,97 @@ class _PromotionBanner extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: EdgeInsets.all(padding),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // 1) 흰색 사각형을 맨 위로 이동 (왼쪽 정렬, 2줄 표시)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20,  // 200% 확대 (기본 10px → 20px)
-                      vertical: 12,    // 200% 확대 (기본 6px → 12px)
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          localization.translate('promo_free_trial_line1'),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Color(0xFFFF6B6B),
-                            fontSize: promoTextFontSize,
-                            fontWeight: FontWeight.bold,
-                            height: 1.3,
-                          ),
-                        ),
-                        Text(
-                          localization.translate('promo_free_trial_line2'),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Color(0xFFFF6B6B),
-                            fontSize: promoTextFontSize,
-                            fontWeight: FontWeight.bold,
-                            height: 1.3,
-                          ),
-                        ),
-                      ],
-                    ),
+                // 왼쪽: 흰색 사각형 (2줄 텍스트)
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
                   ),
-                ),
-                
-                SizedBox(height: 4),
-                
-                // 2) 특별 프로모션 - 정중앙 위치, 200% 확대
-                Text(
-                  localization.translate('promo_title'),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    fontSize: titleFontSize,
-                    fontWeight: FontWeight.bold,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        localization.translate('promo_free_trial_line1'),
+                        style: TextStyle(
+                          color: Color(0xFFFF6B6B),
+                          fontSize: promoTextFontSize,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                      Text(
+                        localization.translate('promo_free_trial_line2'),
+                        style: TextStyle(
+                          color: Color(0xFFFF6B6B),
+                          fontSize: promoTextFontSize,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 4),
                 
-                // 3) 48,000원으로 1년 - 정중앙 위치, 200% 확대
-                Text(
-                  localization.translate('promo_subtitle'),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: subtitleFontSize,
-                    fontWeight: FontWeight.bold,
+                SizedBox(width: 12),
+                
+                // 중앙: 특별 프로모션 + 48,000원으로 1년
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        localization.translate('promo_title'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: titleFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        localization.translate('promo_subtitle'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: subtitleFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 
-                SizedBox(height: 4),
+                SizedBox(width: 12),
                 
-                // 환불규정 버튼
+                // 오른쪽: 환불규정 버튼
                 TextButton(
                   onPressed: () => _showRefundPolicyDialog(context),
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                      horizontal: 8,
+                      vertical: 6,
                     ),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
                     localization.translate('refund_policy'),
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: refundTextSize,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationColor: Colors.white,
