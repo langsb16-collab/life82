@@ -193,23 +193,38 @@ class HomePage extends StatelessWidget {
             ),
             
             SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  const SizedBox(height: 16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // 반응형 패딩
+                  double horizontalPadding;
                   
-                  // 프로모션 배너
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _PromotionBanner(),
-                  ),
+                  if (constraints.maxWidth > 1200) {
+                    horizontalPadding = 80;
+                  } else if (constraints.maxWidth > 768) {
+                    horizontalPadding = 40;
+                  } else if (constraints.maxWidth > 600) {
+                    horizontalPadding = 24;
+                  } else {
+                    horizontalPadding = 16;
+                  }
                   
-                  const SizedBox(height: 16),
-                  
-                  // 회원가입 버튼
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _SignupButton(),
-                  ),
+                  return Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      
+                      // 프로모션 배너
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                        child: _PromotionBanner(),
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      // 회원가입 버튼
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                        child: _SignupButton(),
+                      ),
                   
                   const SizedBox(height: 24),
                   
@@ -334,37 +349,39 @@ class HomePage extends StatelessWidget {
                   
                   const SizedBox(height: 24),
                   
-                  // 안내 문구
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade50,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.blue.shade100),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              localization.translate('disclaimer'),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.blue.shade900,
-                                height: 1.4,
-                              ),
-                            ),
+                      // 안내 문구
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade50,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.blue.shade100),
                           ),
-                        ],
+                          child: Row(
+                            children: [
+                              Icon(Icons.info_outline, color: Colors.blue.shade700, size: 24),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  localization.translate('disclaimer'),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue.shade900,
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 32),
-                ],
+                      
+                      const SizedBox(height: 32),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -442,33 +459,55 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Container(
-            width: 4,
-            height: 24,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 반응형 패딩 및 폰트 크기
+        double horizontalPadding;
+        double fontSize;
+        
+        if (constraints.maxWidth > 1200) {
+          horizontalPadding = 80;
+          fontSize = 22;
+        } else if (constraints.maxWidth > 768) {
+          horizontalPadding = 40;
+          fontSize = 20;
+        } else if (constraints.maxWidth > 600) {
+          horizontalPadding = 24;
+          fontSize = 18;
+        } else {
+          horizontalPadding = 16;
+          fontSize = 18;
+        }
+        
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Row(
+            children: [
+              Container(
+                width: 5,
+                height: 28,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                  ),
+                  borderRadius: BorderRadius.circular(2.5),
+                ),
               ),
-              borderRadius: BorderRadius.circular(2),
-            ),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.3,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.3,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -480,20 +519,51 @@ class _FeatureGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: items.length,
-        itemBuilder: (context, index) => items[index],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 반응형 디자인: 화면 크기에 따라 그리드 컬럼 수 조정
+        int crossAxisCount;
+        double childAspectRatio;
+        double horizontalPadding;
+        
+        if (constraints.maxWidth > 1200) {
+          // PC 환경 (대형 화면)
+          crossAxisCount = 4;
+          childAspectRatio = 1.1;
+          horizontalPadding = 80;
+        } else if (constraints.maxWidth > 768) {
+          // 태블릿 환경
+          crossAxisCount = 3;
+          childAspectRatio = 1.15;
+          horizontalPadding = 40;
+        } else if (constraints.maxWidth > 600) {
+          // 태블릿 세로 모드
+          crossAxisCount = 2;
+          childAspectRatio = 1.2;
+          horizontalPadding = 24;
+        } else {
+          // 모바일 환경
+          crossAxisCount = 2;
+          childAspectRatio = 1.2;
+          horizontalPadding = 16;
+        }
+        
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) => items[index],
+          ),
+        );
+      },
     );
   }
 }
@@ -545,26 +615,26 @@ class _FeatureItem extends StatelessWidget {
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(icon, color: Colors.white, size: iconSize ?? 28),
+                  child: Icon(icon, color: Colors.white, size: iconSize ?? 40),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   title,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 9,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Text(
                   subtitle,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 10,
+                    fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
@@ -620,7 +690,7 @@ class _PromotionBanner extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 11,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -640,7 +710,7 @@ class _PromotionBanner extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Color(0xFFFF6B6B),
-                                fontSize: 9,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 height: 1.3,
                               ),
@@ -652,7 +722,7 @@ class _PromotionBanner extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Color(0xFFFF6B6B),
-                                fontSize: 9,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 height: 1.3,
                               ),
@@ -667,7 +737,7 @@ class _PromotionBanner extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 9,
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -799,7 +869,7 @@ class _SignupButton extends StatelessWidget {
                   child: const Icon(
                     Icons.person_add,
                     color: Colors.white,
-                    size: 32,
+                    size: 40,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -811,7 +881,7 @@ class _SignupButton extends StatelessWidget {
                         localization.translate('signup_cta_title'),
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -820,7 +890,7 @@ class _SignupButton extends StatelessWidget {
                         localization.translate('signup_cta_subtitle'),
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.9),
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                     ],
