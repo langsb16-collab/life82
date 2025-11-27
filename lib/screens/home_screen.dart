@@ -44,17 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
-      body: Stack(
-        children: [
-          screens[_selectedIndex],
-          // Chatbot Button with Tooltip Bubble
-          Positioned(
-            right: 16,
-            bottom: 80,
-            child: _ChatbotFloatingButton(onTap: () => _showChatbot(context)),
-          ),
-        ],
-      ),
+      body: screens[_selectedIndex],
+      floatingActionButton: _ChatbotFloatingButton(onTap: () => _showChatbot(context)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {
