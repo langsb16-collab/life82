@@ -383,6 +383,52 @@ class HomePage extends StatelessWidget {
                       ),
                       
                       const SizedBox(height: 32),
+                      
+                      // 사업자 정보
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                        child: Container(
+                          padding: EdgeInsets.all(constraints.maxWidth > 1200 ? 32 : 16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '등록번호 : 572-68-00752   상호 : 캐쉬 아이큐(CASH IQ)   대표 : 박용균',
+                                style: TextStyle(
+                                  fontSize: constraints.maxWidth > 1200 ? 24 : 12,
+                                  color: Colors.grey.shade700,
+                                  height: 1.6,
+                                ),
+                              ),
+                              SizedBox(height: constraints.maxWidth > 1200 ? 8 : 4),
+                              Text(
+                                '사업장소재지 : 서울특별시 강남구 테헤란로82길 15, 614호(대치동)',
+                                style: TextStyle(
+                                  fontSize: constraints.maxWidth > 1200 ? 24 : 12,
+                                  color: Colors.grey.shade700,
+                                  height: 1.6,
+                                ),
+                              ),
+                              SizedBox(height: constraints.maxWidth > 1200 ? 8 : 4),
+                              Text(
+                                '업태: 정보통신업   종목: 소프트웨어 개발 및 공급업',
+                                style: TextStyle(
+                                  fontSize: constraints.maxWidth > 1200 ? 24 : 12,
+                                  color: Colors.grey.shade700,
+                                  height: 1.6,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 32),
                     ],
                   );
                 },
