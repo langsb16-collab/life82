@@ -23,6 +23,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
+  void _showChatbot(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const ChatbotDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final localization = context.watch<LocalizationService>();
@@ -36,6 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: screens[_selectedIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showChatbot(context),
+        backgroundColor: const Color(0xFF667EEA),
+        child: const Icon(Icons.chat_bubble, color: Colors.white),
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {
@@ -1083,4 +1097,257 @@ class _StarPatternPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+// Chatbot Dialog Widget
+class ChatbotDialog extends StatefulWidget {
+  const ChatbotDialog({super.key});
+
+  @override
+  State<ChatbotDialog> createState() => _ChatbotDialogState();
+}
+
+class _ChatbotDialogState extends State<ChatbotDialog> {
+  String? _selectedQuestion;
+
+  @override
+  Widget build(BuildContext context) {
+    final localization = context.watch<LocalizationService>();
+    
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.8,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+              ),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.chat_bubble, color: Colors.white, size: 28),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localization.translate('chatbot'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        localization.translate('chatbot_greeting'),
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close, color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          
+          // Content
+          Expanded(
+            child: _selectedQuestion == null
+                ? _buildQuestionList()
+                : _buildAnswer(_selectedQuestion!),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuestionList() {
+    final localization = context.watch<LocalizationService>();
+    
+    final List<String> questions = [
+      'faq_q1', 'faq_q2', 'faq_q3', 'faq_q4', 'faq_q5',
+      'faq_q6', 'faq_q7', 'faq_q8', 'faq_q9', 'faq_q10',
+      'faq_q11', 'faq_q12', 'faq_q13', 'faq_q14', 'faq_q15',
+    ];
+
+    return Column(
+      children: [
+        // FAQ Title
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              const Icon(Icons.help_outline, color: Color(0xFF667EEA), size: 24),
+              const SizedBox(width: 8),
+              Text(
+                localization.translate('faq'),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF667EEA),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Question List
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: questions.length,
+            separatorBuilder: (context, index) => const Divider(height: 1),
+            itemBuilder: (context, index) {
+              final questionKey = questions[index];
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: const Color(0xFF667EEA).withValues(alpha: 0.1),
+                  child: Text(
+                    '${index + 1}',
+                    style: const TextStyle(
+                      color: Color(0xFF667EEA),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                title: Text(
+                  localization.translate(questionKey),
+                  style: const TextStyle(fontSize: 14),
+                ),
+                trailing: const Icon(Icons.chevron_right, color: Color(0xFF667EEA)),
+                onTap: () {
+                  setState(() {
+                    _selectedQuestion = questionKey;
+                  });
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAnswer(String questionKey) {
+    final localization = context.watch<LocalizationService>();
+    final answerKey = questionKey.replaceFirst('_q', '_a');
+    
+    return Column(
+      children: [
+        // Back Button
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedQuestion = null;
+                  });
+                },
+                icon: const Icon(Icons.arrow_back, color: Color(0xFF667EEA)),
+              ),
+              Expanded(
+                child: Text(
+                  localization.translate('back_to_question_list'),
+                  style: const TextStyle(
+                    color: Color(0xFF667EEA),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Question and Answer
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Question
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.help, color: Colors.white, size: 24),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          localization.translate(questionKey),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+                
+                // Answer
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.chat_bubble_outline, color: Color(0xFF667EEA), size: 24),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          localization.translate(answerKey),
+                          style: TextStyle(
+                            color: Colors.grey.shade800,
+                            fontSize: 15,
+                            height: 1.6,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
