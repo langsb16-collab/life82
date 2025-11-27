@@ -715,13 +715,11 @@ class _PromotionBanner extends StatelessWidget {
     final localization = context.watch<LocalizationService>();
     final isPCScreen = MediaQuery.of(context).size.width > 1200;
     
-    // 요청사항: 1) 특별 프로모션 - 200% 확대, 2) 48,000원으로 1년 - 200% 확대
-    // 3) 흰색 사각형 크기 200% 확대, 4) 2줄로 변경 (회원가입 없이 / 2회 무료체험)
-    // 기본 크기 (15px)에서 200% 확대 = 30px
+    // 요청사항: 1) 흰색 사각형 위로 상승, 2) 주황색 배너 크기 50% 축소
     final double titleFontSize = 30;  // 특별 프로모션 - 200% 확대
     final double subtitleFontSize = 24;  // 48,000원으로 1년 - 200% 확대
     final double promoTextFontSize = 24;  // 흰색 사각형 텍스트 - 200% 확대
-    final double padding = 16.0;
+    final double padding = 8.0;  // 배너 패딩 50% 축소 (16 → 8)
     
     return Container(
       decoration: BoxDecoration(
@@ -749,35 +747,7 @@ class _PromotionBanner extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // 1) 특별 프로모션 - 정중앙 위치, 200% 확대
-                Text(
-                  localization.translate('promo_title'),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: titleFontSize,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                
-                // 2) 48,000원으로 1년 - 정중앙 위치, 200% 확대
-                Text(
-                  localization.translate('promo_subtitle'),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: subtitleFontSize,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                
-                // 3) 흰색 사각형 - 크기 200% 확대, 왼쪽 정렬, 4) 2줄로 표시
+                // 1) 흰색 사각형을 맨 위로 이동 (왼쪽 정렬, 2줄 표시)
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
@@ -819,7 +789,36 @@ class _PromotionBanner extends StatelessWidget {
                   ),
                 ),
                 
-                SizedBox(height: 8),
+                SizedBox(height: 4),
+                
+                // 2) 특별 프로모션 - 정중앙 위치, 200% 확대
+                Text(
+                  localization.translate('promo_title'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4),
+                
+                // 3) 48,000원으로 1년 - 정중앙 위치, 200% 확대
+                Text(
+                  localization.translate('promo_subtitle'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: subtitleFontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                
+                SizedBox(height: 4),
                 
                 // 환불규정 버튼
                 TextButton(
