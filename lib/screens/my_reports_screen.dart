@@ -15,12 +15,14 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
     final palmAnalyses = StorageService.getAnalysisByType('palm');
     final sajuAnalyses = StorageService.getAnalysisByType('saju');
     final tarotReadings = StorageService.getAnalysisByType('tarot');
+    final enneagramResults = StorageService.getAnalysisByType('enneagram');
 
     final allReports = [
       ...faceAnalyses.map((a) => {'type': '얼굴 관상', 'icon': Icons.face, 'data': a}),
       ...palmAnalyses.map((a) => {'type': '손금', 'icon': Icons.back_hand, 'data': a}),
       ...sajuAnalyses.map((a) => {'type': '사주팔자', 'icon': Icons.calendar_today, 'data': a}),
       ...tarotReadings.map((a) => {'type': '타로', 'icon': Icons.style, 'data': a}),
+      ...enneagramResults.map((a) => {'type': '애니어그램', 'icon': Icons.filter_9_plus, 'data': a}),
     ];
 
     return Scaffold(
@@ -93,6 +95,14 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
 
   void _showReportDetail(BuildContext context, Map<String, dynamic> report) {
     final data = report['data'] as Map<String, dynamic>;
+    final reportType = report['type'] as String;
+    
+    // 애니어그램 결과인 경우 특별 처리
+    if (reportType == '애니어그램') {
+      _showEnneagramDetail(context, data);
+      return;
+    }
+    
     final analysis = data['analysis'] as String;
 
     showModalBottomSheet(
@@ -145,6 +155,181 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void _showEnneagramDetail(BuildContext context, Map<String, dynamic> data) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.8,
+        maxChildSize: 0.95,
+        minChildSize: 0.5,
+        expand: false,
+        builder: (context, scrollController) {
+          return Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.filter_9_plus, size: 32, color: Color(0xFF667EEA)),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text(
+                        '애니어그램 결과',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const Divider(height: 32),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 유형 헤더
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                            ),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                '유형 ${data['dominantType']}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                data['typeName'] as String,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                data['center'] as String,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.9),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Text(
+                                  '🪽 ${data['wingType']}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        
+                        // 핵심 특징
+                        _buildEnneagramInfoCard(
+                          '핵심 특징',
+                          data['core'] as String,
+                          Icons.star,
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        // 강점
+                        _buildEnneagramInfoCard(
+                          '강점',
+                          data['strengths'] as String,
+                          Icons.thumb_up,
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        // 성장 과제
+                        _buildEnneagramInfoCard(
+                          '성장 과제',
+                          data['growth'] as String,
+                          Icons.trending_up,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildEnneagramInfoCard(String title, String content, IconData icon) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: const Color(0xFF667EEA).withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: const Color(0xFF667EEA), size: 20),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF667EEA),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            content,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade800,
+              height: 1.5,
+            ),
+          ),
+        ],
       ),
     );
   }

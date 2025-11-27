@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/localization_service.dart';
+import '../services/storage_service.dart';
 
 class EnneagramScreen extends StatefulWidget {
   const EnneagramScreen({super.key});
@@ -275,7 +276,19 @@ class _EnneagramScreenState extends State<EnneagramScreen> {
       }
     });
     
+    // 날개(Wing) 유형 계산
+    final int leftWing = dominantType == 1 ? 9 : dominantType - 1;
+    final int rightWing = dominantType == 9 ? 1 : dominantType + 1;
+    final int leftScore = typeScores[leftWing] ?? 0;
+    final int rightScore = typeScores[rightWing] ?? 0;
+    final String wingType = leftScore > rightScore 
+        ? '$dominantType번 날개 $leftWing번 (${dominantType}w$leftWing)'
+        : '$dominantType번 날개 $rightWing번 (${dominantType}w$rightWing)';
+    
     final typeInfo = _getTypeInfo(dominantType);
+    
+    // 결과를 StorageService에 저장
+    _saveResult(dominantType, typeScores, wingType);
     
     return Scaffold(
       appBar: AppBar(
@@ -325,9 +338,30 @@ class _EnneagramScreenState extends State<EnneagramScreen> {
                         fontSize: 16,
                       ),
                     ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        '🪽 날개: $wingType',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
+              
+              const SizedBox(height: 24),
+              
+              // 점수 그래프
+              _buildScoreChart(typeScores, dominantType),
               
               const SizedBox(height: 24),
               
@@ -509,5 +543,137 @@ class _EnneagramScreenState extends State<EnneagramScreen> {
     };
     
     return typeData[type]!;
+  }
+
+  Widget _buildScoreChart(Map<int, int> typeScores, int dominantType) {
+    final maxScore = typeScores.values.reduce((a, b) => a > b ? a : b);
+    
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF667EEA).withValues(alpha: 0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.bar_chart, color: const Color(0xFF667EEA), size: 24),
+              const SizedBox(width: 12),
+              const Text(
+                '유형별 점수 분석',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF667EEA),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          ...List.generate(9, (index) {
+            final type = index + 1;
+            final score = typeScores[type] ?? 0;
+            final percentage = maxScore > 0 ? score / maxScore : 0.0;
+            final isDominant = type == dominantType;
+            
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          '유형 $type',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: isDominant ? FontWeight.bold : FontWeight.normal,
+                            color: isDominant ? const Color(0xFF667EEA) : Colors.grey.shade700,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            FractionallySizedBox(
+                              widthFactor: percentage,
+                              child: Container(
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: isDominant
+                                        ? [const Color(0xFF667EEA), const Color(0xFF764BA2)]
+                                        : [Colors.grey.shade400, Colors.grey.shade500],
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      SizedBox(
+                        width: 40,
+                        child: Text(
+                          '$score점',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: isDominant ? FontWeight.bold : FontWeight.normal,
+                            color: isDominant ? const Color(0xFF667EEA) : Colors.grey.shade600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _saveResult(int dominantType, Map<int, int> typeScores, String wingType) async {
+    final typeInfo = _getTypeInfo(dominantType);
+    
+    final result = {
+      'type': 'enneagram',
+      'timestamp': DateTime.now().toIso8601String(),
+      'dominantType': dominantType,
+      'typeName': typeInfo['name'],
+      'center': typeInfo['center'],
+      'wingType': wingType,
+      'scores': typeScores.map((key, value) => MapEntry(key.toString(), value)),
+      'core': typeInfo['core'],
+      'strengths': typeInfo['strengths'],
+      'growth': typeInfo['growth'],
+    };
+    
+    await StorageService.saveAnalysis('enneagram', result);
   }
 }
