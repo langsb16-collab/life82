@@ -717,11 +717,11 @@ class _PromotionBanner extends StatelessWidget {
     
     // 요청사항: 1) 특별 프로모션 - 200% 확대, 2) 48,000원으로 1년 - 200% 확대
     // 3) 흰색 사각형 크기 200% 확대, 4) 2줄로 변경 (회원가입 없이 / 2회 무료체험)
-    final double titleFontSize = isPCScreen ? 60 : 30;  // 200% 확대 (30 → 60)
-    final double promoTextFontSize = isPCScreen ? 48 : 24;  // 200% 확대 (24 → 48)
-    final double subtitleFontSize = isPCScreen ? 48 : 24;  // 200% 확대 (24 → 48)
-    final double iconSize = isPCScreen ? 36 : 18;
-    final double padding = isPCScreen ? 32.0 : 16.0;
+    // 기본 크기 (15px)에서 200% 확대 = 30px
+    final double titleFontSize = 30;  // 특별 프로모션 - 200% 확대
+    final double subtitleFontSize = 24;  // 48,000원으로 1년 - 200% 확대
+    final double promoTextFontSize = 24;  // 흰색 사각형 텍스트 - 200% 확대
+    final double padding = 16.0;
     
     return Container(
       decoration: BoxDecoration(
@@ -747,6 +747,7 @@ class _PromotionBanner extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(padding),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // 1) 특별 프로모션 - 정중앙 위치, 200% 확대
                 Text(
@@ -760,7 +761,7 @@ class _PromotionBanner extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: isPCScreen ? 16 : 8),
+                SizedBox(height: 8),
                 
                 // 2) 48,000원으로 1년 - 정중앙 위치, 200% 확대
                 Text(
@@ -774,15 +775,15 @@ class _PromotionBanner extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: isPCScreen ? 16 : 8),
+                SizedBox(height: 8),
                 
                 // 3) 흰색 사각형 - 크기 200% 확대, 왼쪽 정렬, 4) 2줄로 표시
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: isPCScreen ? 40 : 20,  // 200% 확대
-                      vertical: isPCScreen ? 24 : 12,    // 200% 확대
+                      horizontal: 20,  // 200% 확대 (기본 10px → 20px)
+                      vertical: 12,    // 200% 확대 (기본 6px → 12px)
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -818,22 +819,22 @@ class _PromotionBanner extends StatelessWidget {
                   ),
                 ),
                 
-                SizedBox(height: isPCScreen ? 16 : 8),
+                SizedBox(height: 8),
                 
                 // 환불규정 버튼
                 TextButton(
                   onPressed: () => _showRefundPolicyDialog(context),
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(
-                      horizontal: isPCScreen ? 24 : 12,
-                      vertical: isPCScreen ? 16 : 8,
+                      horizontal: 12,
+                      vertical: 8,
                     ),
                   ),
                   child: Text(
                     localization.translate('refund_policy'),
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: isPCScreen ? 28 : 14,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationColor: Colors.white,
