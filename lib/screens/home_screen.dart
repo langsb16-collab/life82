@@ -715,10 +715,11 @@ class _PromotionBanner extends StatelessWidget {
     final localization = context.watch<LocalizationService>();
     final isPCScreen = MediaQuery.of(context).size.width > 1200;
     
-    // PC 화면에서만 글자 크기 100% 확대
-    final double titleFontSize = isPCScreen ? 30 : 15;
-    final double promoTextFontSize = isPCScreen ? 24 : 12;
-    final double subtitleFontSize = isPCScreen ? 24 : 12;
+    // 요청사항: 1) 특별 프로모션 - 200% 확대, 2) 48,000원으로 1년 - 200% 확대
+    // 3) 흰색 사각형 크기 200% 확대, 4) 2줄로 변경 (회원가입 없이 / 2회 무료체험)
+    final double titleFontSize = isPCScreen ? 60 : 30;  // 200% 확대 (30 → 60)
+    final double promoTextFontSize = isPCScreen ? 48 : 24;  // 200% 확대 (24 → 48)
+    final double subtitleFontSize = isPCScreen ? 48 : 24;  // 200% 확대 (24 → 48)
     final double iconSize = isPCScreen ? 36 : 18;
     final double padding = isPCScreen ? 32.0 : 16.0;
     
@@ -745,79 +746,76 @@ class _PromotionBanner extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: EdgeInsets.all(padding),
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        localization.translate('promo_title'),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: titleFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: isPCScreen ? 12 : 6),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: isPCScreen ? 20 : 10,
-                          vertical: isPCScreen ? 12 : 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              localization.translate('promo_free_trial_line1'),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFFFF6B6B),
-                                fontSize: promoTextFontSize,
-                                fontWeight: FontWeight.bold,
-                                height: 1.3,
-                              ),
-                            ),
-                            Text(
-                              localization.translate('promo_free_trial_line2'),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFFFF6B6B),
-                                fontSize: promoTextFontSize,
-                                fontWeight: FontWeight.bold,
-                                height: 1.3,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: isPCScreen ? 8 : 4),
-                      Text(
-                        localization.translate('promo_subtitle'),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: subtitleFontSize,
-                        ),
-                      ),
-                    ],
+                // 1) 특별 프로모션 - 정중앙 위치, 200% 확대
+                Text(
+                  localization.translate('promo_title'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: iconSize,
+                SizedBox(height: isPCScreen ? 16 : 8),
+                
+                // 2) 48,000원으로 1년 - 정중앙 위치, 200% 확대
+                Text(
+                  localization.translate('promo_subtitle'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: subtitleFontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: isPCScreen ? 16 : 8),
+                
+                // 3) 흰색 사각형 - 크기 200% 확대, 왼쪽 정렬, 4) 2줄로 표시
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isPCScreen ? 40 : 20,  // 200% 확대
+                      vertical: isPCScreen ? 24 : 12,    // 200% 확대
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          localization.translate('promo_free_trial_line1'),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Color(0xFFFF6B6B),
+                            fontSize: promoTextFontSize,
+                            fontWeight: FontWeight.bold,
+                            height: 1.3,
+                          ),
+                        ),
+                        Text(
+                          localization.translate('promo_free_trial_line2'),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Color(0xFFFF6B6B),
+                            fontSize: promoTextFontSize,
+                            fontWeight: FontWeight.bold,
+                            height: 1.3,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
