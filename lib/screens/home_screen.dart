@@ -672,11 +672,11 @@ class _FeatureItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // PC 화면에서만 글자와 아이콘 크기 100% 확대
+        // 모든 화면에서 아이콘과 글자 크기 40% 축소
         final isPCScreen = MediaQuery.of(context).size.width > 1200;
-        final double titleFontSize = isPCScreen ? 28 : 14;  // PC: 100% 확대 (14 → 28)
-        final double subtitleFontSize = isPCScreen ? 24 : 12;  // PC: 100% 확대 (12 → 24)
-        final double effectiveIconSize = isPCScreen ? (iconSize ?? 40) * 2 : (iconSize ?? 40);  // PC: 100% 확대
+        final double titleFontSize = isPCScreen ? 16.8 : 8.4;  // 40% 축소 (28 → 16.8, 14 → 8.4)
+        final double subtitleFontSize = isPCScreen ? 14.4 : 7.2;  // 40% 축소 (24 → 14.4, 12 → 7.2)
+        final double effectiveIconSize = isPCScreen ? (iconSize ?? 40) * 1.2 : (iconSize ?? 40) * 0.6;  // 40% 축소 (80 → 48, 40 → 24)
         
         return Container(
           decoration: BoxDecoration(
@@ -696,19 +696,19 @@ class _FeatureItem extends StatelessWidget {
               onTap: onTap,
               borderRadius: BorderRadius.circular(20),
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(isPCScreen ? 16 : 12),
+                      padding: EdgeInsets.all(isPCScreen ? 10 : 8),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(icon, color: Colors.white, size: effectiveIconSize),
                     ),
-                    SizedBox(height: isPCScreen ? 12 : 8),
+                    SizedBox(height: isPCScreen ? 8 : 4),
                     Text(
                       title,
                       style: TextStyle(
@@ -720,7 +720,7 @@ class _FeatureItem extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: isPCScreen ? 8 : 4),
+                    SizedBox(height: isPCScreen ? 4 : 2),
                     Text(
                       subtitle,
                       style: TextStyle(
