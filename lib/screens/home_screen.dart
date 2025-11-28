@@ -13,7 +13,6 @@ import 'zodiac_screen.dart';
 import 'mbti_screen.dart';
 import 'enneagram_screen.dart';
 import 'signup_screen.dart';
-import 'admin_login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -163,27 +162,6 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      // 관리자 아이콘 (오른쪽 상단 왼쪽)
-                      Positioned(
-                        top: 24,
-                        right: 140,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.admin_panel_settings,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AdminLoginScreen(),
-                              ),
-                            );
-                          },
-                          tooltip: '관리자',
                         ),
                       ),
                       // 언어 변경 아이콘 (오른쪽 상단)
